@@ -107,10 +107,8 @@ public class CoffeCornerMain
                    if(isValid) {
                     
                     totalPrice = price * quantity;  
-                    //calculates overall price  
                     overAllPrice = overAllPrice + totalPrice;  
                     product.add( new Product(psize,productName, quantity, price, totalPrice) );  
-                    // ask for continue shopping?  
                     System.out.print("Want to add more items? (y or n): ");  
                     choice = scan.next().charAt(0);  
                     scan.nextLine();  
