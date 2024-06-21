@@ -1,10 +1,8 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +11,8 @@ import org.junit.Test;
 
 import com.swissre.model.Product;
 import com.swissre.util.MenuCatelog;
+
+
 
 
 public class MenuCatelogTest {
