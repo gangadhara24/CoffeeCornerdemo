@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.swissre.Constants.MenuCatelog;
 import com.swissre.model.Product;
+import com.swissre.util.MenuCatelog;
 
 
 public class MenuCatelogTest {

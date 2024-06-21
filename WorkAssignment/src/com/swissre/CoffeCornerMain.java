@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.swissre.Constants.MenuCatelog;
 import com.swissre.model.Product;
+import com.swissre.util.MenuCatelog;
 
 
 /**
@@ -20,6 +20,7 @@ import com.swissre.model.Product;
  */
 public class CoffeCornerMain   
 {  
+	public static int orderedBeveragesCount = 0;
     public static void main(String args[])   
         {  
             String id = null;  
@@ -30,8 +31,8 @@ public class CoffeCornerMain
             double totalPrice = 0.0;  
             double overAllPrice = 0.0;  
             double cgst, sgst, subtotal=0.0, discount=0.0;  
-            char choice = '\0';  
-            
+            char choice = '\0'; 
+            int count = 0;
             Map<String, List<Product>> productCatelogMenu = MenuCatelog.getProductCatelogMenu();
             
             System.out.println("\t\t\t\t--------------------Invoice-----------------");  
@@ -56,8 +57,17 @@ public class CoffeCornerMain
             productCatelogMenu.keySet().stream().forEach(name-> productNames.append(name).append("/"));
             
             boolean isValid = false;
+            boolean isBeverage = true;
+            boolean isSnack = false;
+            int orderedBeveragesCount = 0;
+            double totalDiscount = 0;
+            boolean isBeverageSnackOrdered = false;
             do   
                 {  
+            	    isValid = false;
+            	    isBeverage = true;
+            	    isSnack= false;
+            	    
                     System.out.println("Enter the product from available items: "+ productNames);  
                     System.out.print("Product Name: ");  
                     productName = scan.nextLine();
@@ -67,10 +77,13 @@ public class CoffeCornerMain
                     
                     if(productName!= null && !"".equals(productName)) {
                     	  List<Product> selectedProductList = productCatelogMenu.get(productName);
-                    	  //System.out.println("selectedProductList: "+ selectedProductList);  
                     	  if(selectedProductList!= null && !selectedProductList.isEmpty()) {
                     		  isValid = true; 
                     		  for (Product product2 : selectedProductList) {
+                    			  if("Snack".equals(product2.getpType())) {
+                    				  isBeverage = false;
+                    				  isSnack = true;
+                    			  }
                     			  sb.append(product2.getpSize()).append("/");
 							  }
                     	  }
@@ -108,7 +121,31 @@ public class CoffeCornerMain
                     
                     totalPrice = price * quantity;  
                     overAllPrice = overAllPrice + totalPrice;  
+                    for (int i = 0; i < quantity; i++) {
+                    	if(isBeverage) {
+                    		orderedBeveragesCount++;
+                    		if(orderedBeveragesCount%5 == 0) {
+                    			overAllPrice = overAllPrice - price;
+                    			totalDiscount+=price;
+                    		}
+                    	}
+                    	if(orderedBeveragesCount>0&&isSnack) {
+                    		isBeverageSnackOrdered = true;
+                    	}                    	
+					}
                     product.add( new Product(psize,productName, quantity, price, totalPrice) );  
+                    
+                    if(isBeverageSnackOrdered) {
+                    	for (Product product2 : product) {
+                    		if(count == 0 && (product2.getPname().equalsIgnoreCase("Extra milk") || product2.getPname().equalsIgnoreCase("Foamed Milk") || product2.getPname().equalsIgnoreCase("Special roast Coffee"))) {
+	                    		overAllPrice = overAllPrice - product2.getPrice();
+	                    		totalDiscount += product2.getPrice();
+	                    		count++;
+	                    		System.out.println("total discount"+ totalDiscount);
+                    		}
+						}
+                    }
+                    
                     System.out.print("Want to add more items? (y or n): ");  
                     choice = scan.next().charAt(0);  
                     scan.nextLine();  
@@ -133,7 +170,8 @@ public class CoffeCornerMain
             
             DecimalFormat df = new DecimalFormat("0.00");
             System.out.println("\n\t\t\t\t\t\t\t\t\t\tTotal Amount (CHF.) " +df.format(overAllPrice) );  
-            discount = overAllPrice*2/100;  
+           // discount = overAllPrice*2/100; 
+            discount+=totalDiscount;
             System.out.println("\n\t\t\t\t\t\t\t\t\t\t    Discount (CHF.) " +df.format(discount));  
             subtotal = overAllPrice-discount;   
             System.out.println("\n\t\t\t\t\t\t\t\t\t\t    Subtotal (CHF.) "+df.format(subtotal));  

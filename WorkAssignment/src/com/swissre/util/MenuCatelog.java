@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.swissre.Constants;
+package com.swissre.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +53,7 @@ public class MenuCatelog {
 		Product baconRollProduct = new Product();
 		baconRollProduct.setPname("Bacon Roll");
 		baconRollProduct.setpSize("Normal");
+		baconRollProduct.setpType("Snack");
 		baconRollProduct.setPrice(4.50d);		
 		baconRollProductList.add(baconRollProduct);
 		

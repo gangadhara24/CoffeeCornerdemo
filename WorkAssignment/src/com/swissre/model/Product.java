@@ -13,6 +13,7 @@ public class Product {
 	private double totalPrice;
 	
 	private String pSize;
+	private String pType = "Beverage";
 	
 	public Product() {
 	}
@@ -25,6 +26,16 @@ public class Product {
 		this.totalPrice = totalPrice;
 	}
 	
+	
+	
+
+	public String getpType() {
+		return pType;
+	}
+
+	public void setpType(String pType) {
+		this.pType = pType;
+	}
 
 	public String getpSize() {
 		return pSize;
